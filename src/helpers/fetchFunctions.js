@@ -1,5 +1,14 @@
-export const fetchProduct = () => {
-  // seu código aqui
+export const fetchProduct = async (id) => {
+  if (!id) throw new Error('ID não informado');
+  try {
+    const response = await fetch(`https://api.mercadolibre.com/items/${id}`);
+    const data = await response.json();
+    console.log(data)
+    return data;
+  } catch (error) {
+    const catchError = 'ID não informado';
+    alert(catchError);
+  }
 };
 
 export const fetchProductsList = async (search) => {
@@ -11,7 +20,11 @@ export const fetchProductsList = async (search) => {
     const data = await response.json();
     return data.results;
   } catch (error) {
-    throw new Error('Algum erro ocorreu, recarregue a página e tente novamente!');
+    const erro = new Error('Algum erro ocorreu, recarregue a página e tente novamente!');
+    const appendError = document.querySelector('.products');
+    const textError = document.createElement('h2');
+    textError.innerText = erro;
+    appendError.appendChild(textError);
   }
 };
 

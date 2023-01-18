@@ -1,5 +1,5 @@
 import { searchCep } from './helpers/cepFunctions';
-import { fetchProductsList } from './helpers/fetchFunctions';
+import { fetchProductsList, fetchProduct } from './helpers/fetchFunctions';
 import { createProductElement } from './helpers/shopFunctions';
 import './style.css';
 
@@ -53,7 +53,7 @@ const closeWarning = () => {
 //     return fetchedProduct;
 //   }
 // };
-const typedArguments = await fetchProductsList('computador')
+const typedArguments = await fetchProductsList('computador');
 console.log(typedArguments);
 
 // const renderSection = document.querySelector('.products');
@@ -80,4 +80,4 @@ const products = document.querySelector('.products');
 
 productList.map((product) => products.appendChild(createProductElement(product)));
 
-
+fetchProduct('MLB2873831739');
