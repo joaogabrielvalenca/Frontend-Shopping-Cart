@@ -1,4 +1,5 @@
 import { removeCartID } from './cartFunctions';
+import { fetchProductsList } from './fetchFunctions';
 
 // Esses comentários que estão antes de cada uma das funções são chamados de JSdoc,
 // experimente passar o mouse sobre o nome das funções e verá que elas possuem descrições!
