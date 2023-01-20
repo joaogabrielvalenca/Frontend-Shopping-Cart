@@ -1,67 +1,38 @@
-import { searchCep } from './helpers/cepFunctions';
+import { searchCep, getAddress } from './helpers/cepFunctions';
 import { fetchProductsList, fetchProduct } from './helpers/fetchFunctions';
 import { createProductElement } from './helpers/shopFunctions';
 import './style.css';
 
 document.querySelector('.cep-button').addEventListener('click', searchCep);
 
-// const movieApiMovies = () => {
-// let loader = `<div class="boxLoading"></div>`;
-// document.getElementById('movieResult').innerHTML = loader;
-// fetch(movieApi_url + "movies/")
-//     .then(response => response.json())
-//     .then(function (data) {
-//         let result = `<h2> Movies I've watched! </h2>`;
-//         data.forEach((movie) => {
-//             const {id, name, year, note_imdb, genre, duration} = movie;
-//             result +=
-//                 `<div>
-//                     <h5> Movie ID: ${id} </h5>
-//                     <ul>
-//                         <li>Movie name: ${name}</li>
-//                         <li>Movie year: ${year}</li>
-//                         <li>Movie note on IMDB: ${note_imdb}</li>
-//                         <li>Movie Genre: ${genre}</li>
-//                         <li>Movie duration: ${duration}</li>
-//                     </ul>
-//                 </div>`;
-//             document.getElementById('movieResult').innerHTML = result;
-//         })
-//     })
-// };
-
 const loadingWarning = () => {
   const loading = document.createElement('h2');
-  const bodyPlace = document.querySelector('.product');
-  loading.innerText('carregando...');
-  loading.classList('loading');
+  const bodyPlace = document.querySelector('.products');
+  loading.innerText = 'carregando...';
+  loading.classList.add('loading');
   bodyPlace.appendChild(loading);
+  console.log('1', bodyPlace);
 };
 
 const closeWarning = () => {
   const removeLoading = document.querySelector('.loading');
-  const bodyPlace = document.querySelector('.product');
-  bodyPlace.removeAttribute(removeLoading);
+  const bodyPlace = document.querySelector('.products');
+  bodyPlace.removeChild(removeLoading);
+  console.log('2', bodyPlace);
 };
 
-// const typedArguments = async () => {
-//   const fetchedProduct = await fetchProductsList('gato');
-//   if (fetchedProduct === Promise) {
-//     loadingWarning();
-//   } else {
-//     closeWarning();
-//     return fetchedProduct;
-//   }
-// };
-const typedArguments = await fetchProductsList('computador');
-console.log(typedArguments);
+const typedArguments = async () => {
+  loadingWarning();
+  const productList = await fetchProductsList('computador');
+  closeWarning();
+  return productList;
+};
 
-// const renderSection = document.querySelector('.products');
-// renderSection.appendChild(createProductElement(typedArguments));
-
-const argumentsMap = () => {
+const argumentsMap = async () => {
   const list = [];
-  typedArguments.map((argument) => {
+  const products = await typedArguments();
+  console.log(products);
+  products.map((argument) => {
     const obj = {};
     obj.id = argument.id;
     obj.title = argument.title;
@@ -70,14 +41,44 @@ const argumentsMap = () => {
     list.push(obj);
     return obj;
   });
-  console.log(list);
   return list;
 };
-
-const productList = argumentsMap();
-
+const productList = await argumentsMap();
 const products = document.querySelector('.products');
-
 productList.map((product) => products.appendChild(createProductElement(product)));
 
-fetchProduct('MLB2873831739');
+const arrayOfIds = productList.map((product, index) => {
+  const list = [];
+  list.push(product, index);
+  return list;
+});
+
+//requisito 8
+
+const selectCartItem = () => {
+  const buttons = document.querySelectorAll('.product__add');
+  const newButtons = [...buttons];
+  // console.log(newButtons);
+  const arr = []
+  newButtons.map((button) => {
+    arr.push(button);
+    button.addEventListener('click', (event) => {
+      // button.classList.add('active');
+      const selectedProduct = event.path[1];
+      console.log(selectedProduct);
+    });
+  });
+  const activeElement = document.querySelector('.active');
+  console.log(activeElement);
+  // console.log(buttons);
+  // const arr = [];
+  // const arrNums = buttons.map((button) => {
+  //   arr.push(button);
+  //   return arr;
+  // });
+  
+};
+
+selectCartItem();
+
+getAddress(60160070);

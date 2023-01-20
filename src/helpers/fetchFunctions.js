@@ -3,7 +3,7 @@ export const fetchProduct = async (id) => {
   try {
     const response = await fetch(`https://api.mercadolibre.com/items/${id}`);
     const data = await response.json();
-    console.log(data)
+    console.log(data);
     return data;
   } catch (error) {
     const catchError = 'ID não informado';
