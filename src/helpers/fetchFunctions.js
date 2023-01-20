@@ -3,7 +3,6 @@ export const fetchProduct = async (id) => {
   try {
     const response = await fetch(`https://api.mercadolibre.com/items/${id}`);
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     const catchError = 'ID não informado';
@@ -27,16 +26,3 @@ export const fetchProductsList = async (search) => {
     appendError.appendChild(textError);
   }
 };
-
-// export const fetchProductsList = async (search) => {
-//   if (!search) throw new Error('DEU PAU!');
-//   try {
-//     const response = await fetch(`https://api.mercadolibre.com/sites/MLB/search?q=${search}`);
-//     const data = await response.json();
-//     const { results } = await data;
-//     const { id, title, thumbnail, price } = await results;
-//     await console.log(id, title, thumbnail, price);
-//   } catch (error) {
-//     throw new Error('DEU PAU!');
-//   }
-// };

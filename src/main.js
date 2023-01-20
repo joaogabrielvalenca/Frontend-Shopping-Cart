@@ -1,6 +1,7 @@
 import { searchCep, getAddress } from './helpers/cepFunctions';
 import { fetchProductsList, fetchProduct } from './helpers/fetchFunctions';
-import { createProductElement } from './helpers/shopFunctions';
+import { createProductElement, createCartProductElement } from './helpers/shopFunctions';
+import { saveCartID } from './helpers/cartFunctions';
 import './style.css';
 
 document.querySelector('.cep-button').addEventListener('click', searchCep);
@@ -11,14 +12,12 @@ const loadingWarning = () => {
   loading.innerText = 'carregando...';
   loading.classList.add('loading');
   bodyPlace.appendChild(loading);
-  console.log('1', bodyPlace);
 };
 
 const closeWarning = () => {
   const removeLoading = document.querySelector('.loading');
   const bodyPlace = document.querySelector('.products');
   bodyPlace.removeChild(removeLoading);
-  console.log('2', bodyPlace);
 };
 
 const typedArguments = async () => {
@@ -31,7 +30,6 @@ const typedArguments = async () => {
 const argumentsMap = async () => {
   const list = [];
   const products = await typedArguments();
-  console.log(products);
   products.map((argument) => {
     const obj = {};
     obj.id = argument.id;
@@ -47,38 +45,32 @@ const productList = await argumentsMap();
 const products = document.querySelector('.products');
 productList.map((product) => products.appendChild(createProductElement(product)));
 
-const arrayOfIds = productList.map((product, index) => {
-  const list = [];
-  list.push(product, index);
-  return list;
-});
+// const arrayOfIds = productList.map((product, index) => {
+//   const list = [];
+//   list.push(product, index);
+//   return list;
+// });
 
 //requisito 8
 
 const selectCartItem = () => {
   const buttons = document.querySelectorAll('.product__add');
   const newButtons = [...buttons];
-  // console.log(newButtons);
-  const arr = []
+  const arr = [];
   newButtons.map((button) => {
     arr.push(button);
-    button.addEventListener('click', (event) => {
-      // button.classList.add('active');
+    button.addEventListener('click', async (event) => {
       const selectedProduct = event.path[1];
-      console.log(selectedProduct);
+      const filteredProduct = selectedProduct.querySelector('.product__id');
+      const idProduct = filteredProduct.innerText;
+      const saveObj = await fetchProduct(idProduct);
+      const { id, title, price, pictures } = saveObj;
+      saveCartID(idProduct);
+      const product = createCartProductElement({ id, title, price, pictures });
+      const appendTo = document.querySelector('.cart__products');
+      appendTo.appendChild(product);
     });
   });
-  const activeElement = document.querySelector('.active');
-  console.log(activeElement);
-  // console.log(buttons);
-  // const arr = [];
-  // const arrNums = buttons.map((button) => {
-  //   arr.push(button);
-  //   return arr;
-  // });
-  
 };
 
 selectCartItem();
-
-getAddress(60160070);
