@@ -22,8 +22,16 @@ const closeWarning = () => {
 
 const typedArguments = async () => {
   loadingWarning();
-  const productList = await fetchProductsList('computador');
+  const productList = await fetchProductsList('gato');
   closeWarning();
+  if (productList.length === 0) {
+    const noResp = new Error('Algum erro ocorreu, recarregue a página e tente novamente');
+    const printResponse = document.createElement('h2');
+    printResponse.classList.add('error');
+    printResponse.innerText = noResp;
+    const body = document.querySelector('.products');
+    body.appendChild(printResponse);
+  }
   return productList;
 };
 
