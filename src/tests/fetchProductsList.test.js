@@ -7,8 +7,9 @@ describe('Teste a função fetchProductsList', () => {
   it('fetchProductsList é uma função', () => {
     expect(typeof fetchProductsList).toEqual("function");
   });
-  it('fetch é chamado ao executar fetchProductsList', () => {
-    expect(fetchProductsList('gato')).resolves.toEqual(Object)
+  it('fetch é chamado ao executar fetchProductsList',  async () => {
+    const comparePromise = Promise;
+    expect(await fetchProductsList('computador')).toEqual(computadorSearch);
   });
   it('fetchProductsList retorna mensagem de erro ao ser chamado com id inválido', () => {
     expect(fetchProductsList('131ihiu13hi')).rejects.toEqual('Algum erro ocorreu, recarregue a página e tente novamente!')
