@@ -21,7 +21,6 @@ export const fetchProductsList = async (search) => {
   try {
     const response = await fetch(`https://api.mercadolibre.com/sites/MLB/search?q=${search}`);
     const data = await response.json();
-    console.log(data)
     return data.results;
   } catch (error) {
     const erro = new Error('Algum erro ocorreu, recarregue a página e tente novamente!');

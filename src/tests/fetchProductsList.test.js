@@ -8,7 +8,7 @@ describe('Teste a função fetchProductsList', () => {
     expect(typeof fetchProductsList).toEqual("function");
   });
   it('fetch é chamado ao executar fetchProductsList', async () => {
-    await expect(fetchProductsList('gato')).resolves.toBe(Object)
+    expect(fetchProductsList('gato')).resolves.toEqual({})
   });
   it('fetch é chamado com o endpoint correto ao executar fetchProductsList', async () => {
     const testFetch = async (search) => {
@@ -16,7 +16,7 @@ describe('Teste a função fetchProductsList', () => {
       const data = await response.json();
       return data;
     }
-    await expect(testFetch('gato')).toBe(fetchProductsList('gato'))
+    await expect(fetchProductsList('gato')).toEqual(testFetch('gato'));
   });
   
 
