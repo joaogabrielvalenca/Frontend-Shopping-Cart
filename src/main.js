@@ -1,4 +1,4 @@
-import { searchCep, getAddress } from './helpers/cepFunctions';
+import { searchCep } from './helpers/cepFunctions';
 import { fetchProductsList, fetchProduct } from './helpers/fetchFunctions';
 import { createProductElement, createCartProductElement } from './helpers/shopFunctions';
 import { saveCartID } from './helpers/cartFunctions';
@@ -31,11 +31,12 @@ const argumentsMap = async () => {
   const list = [];
   const products = await typedArguments();
   products.map((argument) => {
-    const obj = {};
-    obj.id = argument.id;
-    obj.title = argument.title;
-    obj.thumbnail = argument.thumbnail;
-    obj.price = argument.price;
+    const obj = {
+      id: argument.id,
+      title: argument.title,
+      thumbnail: argument.thumbnail,
+      price: argument.price,
+    };
     list.push(obj);
     return obj;
   });
@@ -44,14 +45,6 @@ const argumentsMap = async () => {
 const productList = await argumentsMap();
 const products = document.querySelector('.products');
 productList.map((product) => products.appendChild(createProductElement(product)));
-
-// const arrayOfIds = productList.map((product, index) => {
-//   const list = [];
-//   list.push(product, index);
-//   return list;
-// });
-
-//requisito 8
 
 const selectCartItem = () => {
   const buttons = document.querySelectorAll('.product__add');
@@ -70,6 +63,7 @@ const selectCartItem = () => {
       const appendTo = document.querySelector('.cart__products');
       appendTo.appendChild(product);
     });
+    return arr;
   });
 };
 

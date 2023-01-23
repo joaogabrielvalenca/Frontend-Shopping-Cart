@@ -2,7 +2,7 @@ export const getAddress = async (postalCode) => {
   const response = await fetch(`https://cep.awesomeapi.com.br/json/${postalCode}`);
   const data = await response.json();
   const { address, district, city, state } = data;
-  const obj = {};
+  const obj = { rua, bairro, cidade, estado };
   obj.rua = address;
   obj.bairro = district;
   obj.cidade = city;
