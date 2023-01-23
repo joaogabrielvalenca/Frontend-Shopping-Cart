@@ -1,7 +1,7 @@
 import { searchCep } from './helpers/cepFunctions';
 import { fetchProductsList, fetchProduct } from './helpers/fetchFunctions';
 import { createProductElement, createCartProductElement } from './helpers/shopFunctions';
-import { saveCartID } from './helpers/cartFunctions';
+import { saveCartID, getSavedCartIDs } from './helpers/cartFunctions';
 import './style.css';
 
 document.querySelector('.cep-button').addEventListener('click', searchCep);
@@ -75,4 +75,14 @@ const selectCartItem = () => {
   });
 };
 
+const cartStorage = () => {
+  const storageItems = JSON.parse(localStorage.getItem('cartProducts'));
+  console.log(storageItems);
+  return storageItems;
+};
+console.log(cartStorage());
 selectCartItem();
+
+window.onload = () => {
+  cartStorage();
+};
