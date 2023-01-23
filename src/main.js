@@ -1,7 +1,7 @@
 import { searchCep } from './helpers/cepFunctions';
 import { fetchProductsList, fetchProduct } from './helpers/fetchFunctions';
 import { createProductElement, createCartProductElement } from './helpers/shopFunctions';
-import { saveCartID, getSavedCartIDs } from './helpers/cartFunctions';
+import { saveCartID } from './helpers/cartFunctions';
 import './style.css';
 
 document.querySelector('.cep-button').addEventListener('click', searchCep);
@@ -75,33 +75,32 @@ const selectCartItem = () => {
   });
 };
 
-const cartStorage = async () => {
-  const storageItems = JSON.parse(localStorage.getItem('cartProducts'));
-  const mapItems = storageItems.map(async (item) => {
-    const cart = (fetchProduct(item));
-    return cart;
-  });
-  const resolvingPromises = await Promise.all(mapItems);
-  console.log(resolvingPromises);
-  resolvingPromises.map(async (promise) => {
-    const restauredCart = await createCartProductElement(promise.id, promise.title, promise.price, promise.pictures);
-    console.log(restauredCart);
-    return restauredCart;
-  });
-  // const { id, title, prices, pictures } = await resolvingPromises;
-  // console.log(id, title);
-  // const product = createCartProductElement({ id, title, prices, pictures });
-  // console.log(product);
-  // const appendMother = document.querySelector('.cart__products');
-  // appendMother.appendChild(product);
-};
+// const cartStorage = async () => {
+//   const storageItems = JSON.parse(localStorage.getItem('cartProducts'));
+//   const mapItems = storageItems.map(async (item) => {
+//     const cart = (fetchProduct(item));
+//     return cart;
+//   });
+// };
+// const resolvingPromises = await Promise.all(mapItems);
+// console.log(resolvingPromises);
+// resolvingPromises.map(async (promise) => {
+// const restauredCart = await
+// createCartProductElement(promise.id, promise.title, promise.price, promise.pictures);
+// console.log(restauredCart);
+// return restauredCart;
+// });
+// const { id, title, prices, pictures } = await resolvingPromises;
+// console.log(id, title);
+// const product = createCartProductElement({ id, title, prices, pictures });
+// console.log(product);
+// const appendMother = document.querySelector('.cart__products');
+// appendMother.appendChild(product);
+// };
 
-console.log(cartStorage());
+// console.log(cartStorage());
 selectCartItem();
 
-window.onload = () => {
-  cartStorage();
-};
-
-
-console.log(fetchProductsList('gato'));
+// window.onload = () => {
+//   cartStorage();
+// }
