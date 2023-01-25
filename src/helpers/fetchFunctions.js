@@ -1,7 +1,6 @@
 export const fetchProduct = async (id) => {
   if (!id) {
-    const erro = new Error('ID não informado');
-    return erro;
+    throw new Error('ID não informado');
   }
   try {
     const response = await fetch(`https://api.mercadolibre.com/items/${id}`);
@@ -15,15 +14,14 @@ export const fetchProduct = async (id) => {
 
 export const fetchProductsList = async (search) => {
   if (!search) {
-    const empty = new Error('Algum erro ocorreu, recarregue a página e tente novamente');
-    alert(empty);
+    throw new Error('Termo de busca não informado');
   }
   try {
     const response = await fetch(`https://api.mercadolibre.com/sites/MLB/search?q=${search}`);
     const data = await response.json();
     return data.results;
   } catch (error) {
-    const erro = new Error('Algum erro ocorreu, recarregue a página e tente novamente!');
+    const erro = new Error('Termo de busca não informado');
     const appendError = document.querySelector('.products');
     const textError = document.createElement('h2');
     textError.innerText = erro;

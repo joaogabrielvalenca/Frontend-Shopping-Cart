@@ -22,15 +22,25 @@ const closeWarning = () => {
 
 const typedArguments = async () => {
   loadingWarning();
-  const productList = await fetchProductsList('gato');
+  const productList = await fetchProductsList('computador');
   closeWarning();
-  if (productList.length === 0) {
-    const noResp = new Error('Algum erro ocorreu, recarregue a página e tente novamente');
+  if (productList === undefined) {
+    const noResp = ('Algum erro ocorreu, recarregue a página e tente novamente');
     const printResponse = document.createElement('h2');
     printResponse.classList.add('error');
     printResponse.innerText = noResp;
     const body = document.querySelector('.products');
     body.appendChild(printResponse);
+    throw new Error(noResp);
+  }
+  if (productList.length === 0) {
+    const noResp = ('Algum erro ocorreu, recarregue a página e tente novamente');
+    const printResponse = document.createElement('h2');
+    printResponse.classList.add('error');
+    printResponse.innerText = noResp;
+    const body = document.querySelector('.products');
+    body.appendChild(printResponse);
+    throw new Error(noResp);
   }
   return productList;
 };
@@ -54,38 +64,21 @@ const productList = await argumentsMap();
 const products = document.querySelector('.products');
 productList.map((product) => products.appendChild(createProductElement(product)));
 
-const selectCartItem = () => {
-  const buttons = document.querySelectorAll('.product__add');
-  const newButtons = [...buttons];
-  const arr = [];
-  const pricesArray = [];
-  newButtons.map((button) => {
-    arr.push(button);
-    button.addEventListener('click', async (event) => {
-      const selectedProduct = event.path[1];
-      const filteredProduct = selectedProduct.querySelector('.product__id');
-      const idProduct = filteredProduct.innerText;
-      const saveObj = await fetchProduct(idProduct);
-      const { id, title, price, pictures } = saveObj;
-      saveCartID(idProduct);
-      const product = createCartProductElement({ id, title, price, pictures });
-      const appendTo = document.querySelector('.cart__products');
-      appendTo.appendChild(product);
-      const filteredPrice = selectedProduct.querySelector('.product__price__value');
-      const priceInner = filteredPrice.innerText;
-      const numberPrice = Number(priceInner);
-      pricesArray.push(numberPrice);
-      const pricesReduce = pricesArray.reduce((acc, curr) => acc + curr);
-      const roundPrices = pricesReduce.toFixed(2);
-      const showPrice = document.querySelector('.total-price');
-      showPrice.innerText = roundPrices;
-    });
-    return arr;
+const getPricesFromProductsIds = (ids = []) => {
+  const list = [];
+  ids.map(async (productId) => {
+    const saveObj = await fetchProduct(productId);
+    const { price } = saveObj;
+    list.push(price);
+    return list;
   });
+  console.log(list);
+  return list;
 };
 
-const fetchProductsFromLocalStorage = () => {
+const fetchProductsFromLocalStorage = async () => {
   const storageProducts = JSON.parse(localStorage.getItem('cartProducts'));
+  if (!storageProducts) return false;
   const arrPrices = [];
   console.log(storageProducts);
   storageProducts.map(async (product) => {
@@ -97,13 +90,51 @@ const fetchProductsFromLocalStorage = () => {
     arrPrices.push(price);
     const sumPrices = arrPrices.reduce((acc, curr) => acc + curr);
     const roundPrice = sumPrices.toFixed(2);
-    console.log(sumPrices);
     const showPrice = document.querySelector('.total-price');
     showPrice.innerText = roundPrice;
     return saveObj;
   });
 };
+
 fetchProductsFromLocalStorage();
+
+const selectCartItem = async () => {
+  const buttons = document.querySelectorAll('.product__add');
+  const newButtons = [...buttons];
+  const arr = [];
+  const arrayOfIds = JSON.parse(localStorage.getItem('cartProducts')) ?? [];
+  const prices = await getPricesFromProductsIds(arrayOfIds);
+  console.log(prices);
+  newButtons.map((button) => {
+    arr.push(button);
+    button.addEventListener('click', async (event) => {
+      const selectedProduct = event.path[1];
+      const filteredProduct = selectedProduct.querySelector('.product__id');
+      const idProduct = filteredProduct.innerText;
+      const saveObj = await fetchProduct(idProduct);
+      const { id, title, price, pictures } = saveObj;
+      const product = createCartProductElement({ id, title, price, pictures });
+      saveCartID(idProduct);
+      const appendTo = document.querySelector('.cart__products');
+      appendTo.appendChild(product);
+      const filteredPrice = selectedProduct.querySelector('.product__price__value');
+      const priceInner = filteredPrice.innerText;
+      const numberPrice = Number(priceInner);
+      prices.push(numberPrice);
+      console.log(prices);
+      const pricesReduce = prices.reduce((acc, curr) => acc + curr);
+      const roundPrices = pricesReduce.toFixed(2);
+      const showPrice = document.querySelector('.total-price');
+      showPrice.innerText = roundPrices;
+    })
+    const remove = document.querySelector('.cart__product__info-container');
+    console.log(remove);
+    // remove.addEventListener('click', () => {
+    //   console.log(remove);
+    // });
+    return arr;
+  });
+};
 
 selectCartItem();
 
