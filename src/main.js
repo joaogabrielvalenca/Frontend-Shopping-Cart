@@ -126,7 +126,7 @@ const selectCartItem = async () => {
       const roundPrices = pricesReduce.toFixed(2);
       const showPrice = document.querySelector('.total-price');
       showPrice.innerText = roundPrices;
-    })
+    });
     const remove = document.querySelector('.cart__product__info-container');
     console.log(remove);
     // remove.addEventListener('click', () => {
