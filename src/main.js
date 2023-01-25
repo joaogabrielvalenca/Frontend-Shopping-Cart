@@ -72,25 +72,25 @@ const getPricesFromProductsIds = (ids = []) => {
     list.push(price);
     return list;
   });
-  console.log(list);
   return list;
 };
 
+const cartProduct = '.cart__products';
+const totalPrice = '.total-price';
 const fetchProductsFromLocalStorage = async () => {
   const storageProducts = JSON.parse(localStorage.getItem('cartProducts'));
   if (!storageProducts) return false;
   const arrPrices = [];
-  console.log(storageProducts);
   storageProducts.map(async (product) => {
     const saveObj = await fetchProduct(product);
     const { id, title, price, pictures } = saveObj;
     const fetchedProduct = createCartProductElement({ id, title, price, pictures });
-    const cartAppend = document.querySelector('.cart__products');
+    const cartAppend = document.querySelector(cartProduct);
     cartAppend.appendChild(fetchedProduct);
     arrPrices.push(price);
     const sumPrices = arrPrices.reduce((acc, curr) => acc + curr);
     const roundPrice = sumPrices.toFixed(2);
-    const showPrice = document.querySelector('.total-price');
+    const showPrice = document.querySelector(totalPrice);
     showPrice.innerText = roundPrice;
     return saveObj;
   });
@@ -101,13 +101,12 @@ fetchProductsFromLocalStorage();
 const selectCartItem = async () => {
   const buttons = document.querySelectorAll('.product__add');
   const newButtons = [...buttons];
-  const arr = [];
   const arrayOfIds = JSON.parse(localStorage.getItem('cartProducts')) ?? [];
   const prices = await getPricesFromProductsIds(arrayOfIds);
-  console.log(prices);
+  const arr = [];
   newButtons.map((button) => {
     arr.push(button);
-    button.addEventListener('click', async (event) => {
+    const addProduct = button.addEventListener('click', async (event) => {
       const selectedProduct = event.path[1];
       const filteredProduct = selectedProduct.querySelector('.product__id');
       const idProduct = filteredProduct.innerText;
@@ -115,7 +114,7 @@ const selectCartItem = async () => {
       const { id, title, price, pictures } = saveObj;
       const product = createCartProductElement({ id, title, price, pictures });
       saveCartID(idProduct);
-      const appendTo = document.querySelector('.cart__products');
+      const appendTo = document.querySelector(cartProduct);
       appendTo.appendChild(product);
       const filteredPrice = selectedProduct.querySelector('.product__price__value');
       const priceInner = filteredPrice.innerText;
@@ -124,15 +123,26 @@ const selectCartItem = async () => {
       console.log(prices);
       const pricesReduce = prices.reduce((acc, curr) => acc + curr);
       const roundPrices = pricesReduce.toFixed(2);
-      const showPrice = document.querySelector('.total-price');
+      const showPrice = document.querySelector(totalPrice);
       showPrice.innerText = roundPrices;
+      return arr;
     });
-    const remove = document.querySelector('.cart__product__info-container');
-    console.log(remove);
-    // remove.addEventListener('click', () => {
-    //   console.log(remove);
-    // });
-    return arr;
+    return addProduct;
+  });
+  const itens = document.querySelector(cartProduct);
+  itens.addEventListener('click', (event) => {
+    const abc = event.path[1];
+    const value = abc.querySelector('.product__price__value');
+    const valueInner = value.innerText;
+    const numberPrice = Number(valueInner);
+    const indexToDelete = prices.indexOf(numberPrice);
+    prices.splice(indexToDelete, 1);
+    const pricesReduce = prices.reduce((acc, curr) => acc + curr, 0);
+    const showPrice = document.querySelector(totalPrice);
+    showPrice.innerText = pricesReduce;
+    if (!prices) {
+      showPrice.innerText = 0;
+    }
   });
 };
 
