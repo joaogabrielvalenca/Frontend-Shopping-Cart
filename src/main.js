@@ -25,9 +25,13 @@ const typedArguments = async () => {
   try {
     loadingWarning();
     const productList = await fetchProductsList('computador');
+    if (productList.length === 0) {
+      closeWarning();
+      throw new Error(err);
+    }
     closeWarning();
     return productList;
-  } catch {
+  } catch (err) {
     const noResp = 'Algum erro ocorreu, recarregue a página e tente novamente';
     const printResponse = document.createElement('h2');
     printResponse.classList.add('error');
@@ -35,7 +39,6 @@ const typedArguments = async () => {
     const bodyAppend = document.querySelector('.products');
     bodyAppend.appendChild(printResponse);
     console.log(err);
-    throw new Error(noResp);
   }
 };
 
