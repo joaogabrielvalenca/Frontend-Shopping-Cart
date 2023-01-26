@@ -3,6 +3,7 @@ import { fetchProductsList, fetchProduct } from './helpers/fetchFunctions';
 import { createProductElement, createCartProductElement } from './helpers/shopFunctions';
 import { saveCartID } from './helpers/cartFunctions';
 import './style.css';
+import product from './tests/mocks/product';
 
 document.querySelector('.cep-button').addEventListener('click', searchCep);
 
@@ -21,28 +22,28 @@ const closeWarning = () => {
 };
 
 const typedArguments = async () => {
-  loadingWarning();
-  const productList = await fetchProductsList('computador');
-  closeWarning();
-  if (productList === undefined) {
-    const noResp = ('Algum erro ocorreu, recarregue a página e tente novamente');
+  try {
+    loadingWarning();
+    const productList = await fetchProductsList('123abaduhih');
+    closeWarning();
+    if (productList.length === 0) {
+      const noResp = 'Algum erro ocorreu, recarregue a página e tente novamente';
+      const printResponse = document.createElement('h2');
+      printResponse.classList.add('error');
+      printResponse.innerText = noResp;
+      const bodyAppend = document.querySelector('.products');
+      bodyAppend.appendChild(printResponse);
+    }
+  } catch {
+    const noResp = 'Algum erro ocorreu, recarregue a página e tente novamente';
     const printResponse = document.createElement('h2');
     printResponse.classList.add('error');
     printResponse.innerText = noResp;
-    const body = document.querySelector('.products');
-    body.appendChild(printResponse);
+    const bodyAppend = document.querySelector('.products');
+    bodyAppend.appendChild(printResponse);
+    console.log(err);
     throw new Error(noResp);
   }
-  if (productList.length === 0) {
-    const noResp = ('Algum erro ocorreu, recarregue a página e tente novamente');
-    const printResponse = document.createElement('h2');
-    printResponse.classList.add('error');
-    printResponse.innerText = noResp;
-    const body = document.querySelector('.products');
-    body.appendChild(printResponse);
-    throw new Error(noResp);
-  }
-  return productList;
 };
 
 const argumentsMap = async () => {

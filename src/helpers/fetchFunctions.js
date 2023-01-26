@@ -21,9 +21,10 @@ export const fetchProductsList = async (search) => {
     const data = await response.json();
     return data.results;
   } catch (error) {
-    const erro = new Error('Termo de busca não informado');
+    const erro = new Error('Algum erro ocorreu, recarregue a página e tente novamente');
     const appendError = document.querySelector('.products');
     const textError = document.createElement('h2');
+    textError.classList('.error');
     textError.innerText = erro;
     appendError.appendChild(textError);
   }

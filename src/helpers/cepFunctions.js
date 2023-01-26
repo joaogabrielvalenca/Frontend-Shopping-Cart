@@ -12,21 +12,22 @@ export default async function getAddress(postalCode) {
     };
     const postObj = document.querySelector('.cart__address');
     const textReturn = `${obj.rua} - ${obj.bairro} - ${obj.cidade} - ${obj.estado}`;
+    console.log(obj.rua);
     if (obj.rua === undefined) {
+      console.log('entrei');
       const throwError = 'CEP não encontrado';
-      postObj.innerHTML = throwError;
       postObj.innerText = throwError;
-      throw new Error(throwError);
+      // throw new Error(throwError);
     } else {
-      postObj.innerHTML = textReturn;
+      postObj.innerText = textReturn;
     }
-    return postObj;
-  } catch {
-    const erro = 'CEP não encontrado';
-    const postError = document.querySelector('.cart__address');
-    postError.innerText = erro;
-    postError.innerHTML = erro;
-    throw new Error(erro);
+  } catch (err) {
+    const throwError = 'CEP não encontrado';
+    const postObj = document.querySelector('.cart__address');
+    postObj.innerText = throwError;
+    console.log('catch');
+    console.log(err);
+    return err;
   }
 }
 
