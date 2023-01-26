@@ -112,7 +112,7 @@ describe('Shopping Cart Project', () => {
     });
   });
 
-  describe.only('5 - Exiba um texto de `erro` caso a requisição à API falhe', () => {
+  describe('5 - Exiba um texto de `erro` caso a requisição à API falhe', () => {
     it('O texto não deve ser exibido caso a requisição à API seja bem sucedida', () => {
       cy.get(ERRO)
         .should('not.exist');

@@ -25,13 +25,13 @@ const typedArguments = async () => {
   try {
     loadingWarning();
     const productList = await fetchProductsList('computador');
-    if (productList.length === 0) {
-      closeWarning();
+    if (productList.length === undefined) {
       throw new Error(err);
     }
     closeWarning();
     return productList;
   } catch (err) {
+    closeWarning();
     const noResp = 'Algum erro ocorreu, recarregue a página e tente novamente';
     const printResponse = document.createElement('h2');
     printResponse.classList.add('error');
@@ -45,7 +45,7 @@ const typedArguments = async () => {
 const argumentsMap = async () => {
   const list = [];
   const products = await typedArguments();
-  products.map((argument) => {
+  products?.map((argument) => {
     const obj = {
       id: argument.id,
       title: argument.title,
