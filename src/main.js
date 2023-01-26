@@ -3,7 +3,7 @@ import { fetchProductsList, fetchProduct } from './helpers/fetchFunctions';
 import { createProductElement, createCartProductElement } from './helpers/shopFunctions';
 import { saveCartID } from './helpers/cartFunctions';
 import './style.css';
-import product from './tests/mocks/product';
+// import product from './tests/mocks/product';
 
 document.querySelector('.cep-button').addEventListener('click', searchCep);
 
@@ -24,16 +24,9 @@ const closeWarning = () => {
 const typedArguments = async () => {
   try {
     loadingWarning();
-    const productList = await fetchProductsList('123abaduhih');
+    const productList = await fetchProductsList('computador');
     closeWarning();
-    if (productList.length === 0) {
-      const noResp = 'Algum erro ocorreu, recarregue a página e tente novamente';
-      const printResponse = document.createElement('h2');
-      printResponse.classList.add('error');
-      printResponse.innerText = noResp;
-      const bodyAppend = document.querySelector('.products');
-      bodyAppend.appendChild(printResponse);
-    }
+    return productList;
   } catch {
     const noResp = 'Algum erro ocorreu, recarregue a página e tente novamente';
     const printResponse = document.createElement('h2');
