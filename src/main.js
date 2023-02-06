@@ -24,7 +24,7 @@ const closeWarning = () => {
 const typedArguments = async () => {
   try {
     loadingWarning();
-    const productList = await fetchProductsList('computador');
+    const productList = await fetchProductsList('compu123jfiaodjr');
     if (productList.length === undefined) {
       throw new Error(err);
     }

@@ -19,13 +19,16 @@ export const fetchProductsList = async (search) => {
   try {
     const response = await fetch(`https://api.mercadolibre.com/sites/MLB/search?q=${search}`);
     const data = await response.json();
+    console.log(data.results);
     return data.results;
   } catch (error) {
     const erro = new Error('Algum erro ocorreu, recarregue a página e tente novamente');
-    const appendError = document.querySelector('.products');
-    const textError = document.createElement('h2');
-    textError.classList('.error');
-    textError.innerText = erro;
-    appendError.appendChild(textError);
+    throw erro;
+    //   const appendError = document.querySelector('.products');
+    //   const textError = document.createElement('h2');
+    //   textError.classList('.error');
+    //   textError.innerText = erro;
+    //   appendError.appendChild(textError);
+    // }
   }
 };
